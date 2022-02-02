@@ -24,7 +24,7 @@ type PostgresClient struct {
 
 // NewPostgresClient returns a new PostgresClient with the given connection string
 func NewPostgresClient() *PostgresClient {
-	connectionString := "postgres://aaxagnxiuvdgfe:0ca29444e6e2a9dd1565bc6384921da5d5f4511587fe4498f9219e4a87ff3400@ec2-176-34-211-0.eu-west-1.compute.amazonaws.com:5432/df6u184vr7eg3s"
+	connectionString := "postgres://ttuzpbnnzexpnh:3aae25a4574b6a3a47781a0afe4c306a0461d9e7010cad46d69a9ba3933ffea6@ec2-52-18-116-67.eu-west-1.compute.amazonaws.com:5432/df82hje0i8jjqa"
 	db, err := sql.Open("pgx", connectionString)
 	if err != nil {
 		log.Fatal(err)

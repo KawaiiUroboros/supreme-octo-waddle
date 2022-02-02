@@ -6,6 +6,8 @@ import (
 	createIncidentCommands "emergence/commandsAndQueries/CreateIncident"
 	createTeamCommands "emergence/commandsAndQueries/CreateTeam"
 	getCityAndAddressByExternalUserIdCommand "emergence/commandsAndQueries/GetCityAndAddressByExternalUserId"
+	"emergence/integration"
+	"emergence/integration/clients"
 	"github.com/baranius/godiator"
 	"github.com/izumin5210/grapi/pkg/grapiserver"
 	panicHandler "github.com/kazegusuri/grpc-panic-handler"
@@ -24,10 +26,9 @@ func run() error {
 	if errorFromMigrations != nil {
 		log.Panic(errorFromMigrations)
 	}
-	repo, err := InitializeDependency()
-	if err != nil {
-		log.Panic(err)
-	}
+	postgresClient := clients.NewPostgresClient()
+	opsGenieClient := clients.NewOpsGenieClient()
+	repo := integration.NewRepository(postgresClient, opsGenieClient)
 
 	//create the mediator for the application and register the commands and queries
 	g := godiator.GetInstance()
