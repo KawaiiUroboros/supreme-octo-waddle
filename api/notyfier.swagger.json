@@ -1,0 +1,203 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "notyfier.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/CreateChats": {
+      "post": {
+        "operationId": "NotyfierService_CreateChats",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/emergenceCreateChatsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/emergenceCreateChatsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "NotyfierService"
+        ]
+      }
+    },
+    "/DeleteChats": {
+      "post": {
+        "summary": "RPC for deleting a chats by external user ids",
+        "operationId": "NotyfierService_DeleteChats",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/emergenceDeleteChatsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/emergenceDeleteChatsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "NotyfierService"
+        ]
+      }
+    },
+    "/GetNotification/{userid}": {
+      "get": {
+        "summary": "get rpc for getting a chats by user ids",
+        "operationId": "NotyfierService_GetNotification",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/emergenceGetNotificationResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "NotyfierService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "emergenceCreateChatsRequest": {
+      "type": "object",
+      "properties": {
+        "ExternalUserIdToInterval": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "title": "CreateChats"
+    },
+    "emergenceCreateChatsResponse": {
+      "type": "object",
+      "properties": {
+        "ExternalUserIdToChatUrl": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "emergenceDeleteChatsRequest": {
+      "type": "object",
+      "properties": {
+        "user_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "DeleteChatsRequest is a request to delete chats"
+    },
+    "emergenceDeleteChatsResponse": {
+      "type": "object",
+      "properties": {
+        "deleted_chats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "DeleteChatsResponse is a response to delete chats"
+    },
+    "emergenceGetNotificationResponse": {
+      "type": "object",
+      "properties": {
+        "answer": {
+          "type": "string"
+        }
+      },
+      "title": "GetNotificationResponse is a response for getting a chats by user ids"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

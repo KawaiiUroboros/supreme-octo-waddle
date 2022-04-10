@@ -1,0 +1,10 @@
+wire: in terminal write wire in directory with main func, and build directive // +build wireinject
+
+repo to wire: https://github.com/risentveber/example-di-go/tree/master/services/clients
+
+proto regen:
+    grapi protoc
+    grapi server
+
+migration:
+migrate create -ext sql -dir db/migrations -seq name-of-migration
