@@ -12,11 +12,11 @@ import (
 )
 
 // RegisterWithServer implements grapiserver.Server.RegisterWithServer.
-func (s *notyfierServiceServerImpl) RegisterWithServer(grpcSvr *grpc.Server) {
-	api_pb.RegisterNotyfierServiceServer(grpcSvr, s)
+func (s *hospitalServiceServerImpl) RegisterWithServer(grpcSvr *grpc.Server) {
+	api_pb.RegisterHospitalServiceServer(grpcSvr, s)
 }
 
 // RegisterWithHandler implements grapiserver.Server.RegisterWithHandler.
-func (s *notyfierServiceServerImpl) RegisterWithHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return api_pb.RegisterNotyfierServiceHandler(ctx, mux, conn)
+func (s *hospitalServiceServerImpl) RegisterWithHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return api_pb.RegisterHospitalServiceHandler(ctx, mux, conn)
 }

@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package achirikova.emergence;
+
+option go_package = "supreme-octo-waddle/api;api_pb";
+
+
+import "google/api/annotations.proto";
+
+service HospitalService {
+  //create team
+  rpc CreateTeam (CreateTeamRequest) returns (CreateTeamResponse) {
+    option (google.api.http) = {
+      post: "/teams"
+      body: "*"
+    };
+  }
+  //create incident
+  rpc CreateIncident (CreateIncidentRequest) returns (CreateIncidentResponse) {
+    option (google.api.http) = {
+      post: "/incidents"
+      body: "*"
+    };
+  }
+  //Get city and address by external user id
+  rpc GetCityAndAddressByExternalUserId (GetCityAndAddressByExternalUserIdRequest) returns (GetCityAndAddressByExternalUserIdResponse) {
+    option (google.api.http) = {
+      get: "/users/{external_user_id}/city_and_address"
+    };
+  }
+}
+//create team request
+message CreateTeamRequest {
+  repeated string emails = 1;
+  string city = 2;
+}
+//create team response
+message CreateTeamResponse {
+  bool success = 1;
+  string error = 2;
+}
+//create incident request
+message CreateIncidentRequest {
+  string title = 1;
+  string description = 2;
+  string city = 3;
+}
+//create incident response
+message CreateIncidentResponse {
+  bool success = 1;
+  string error = 2;
+}
+//get city and address by external user id request
+message GetCityAndAddressByExternalUserIdRequest {
+  string external_user_id = 1;
+}
+//get city and address by external user id response
+message GetCityAndAddressByExternalUserIdResponse {
+  string city = 1;
+  string address = 2;
+}
+

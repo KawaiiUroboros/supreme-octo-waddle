@@ -3,15 +3,15 @@ package main
 import (
 	"emergence/app/server"
 	"emergence/cmd/migrations"
-	createChatCommands "emergence/commandsAndQueries/CreateChat"
-	deleteChatCommands "emergence/commandsAndQueries/DeleteChat"
+	createIncidentCommands "emergence/commandsAndQueries/CreateIncident"
+	createTeamCommands "emergence/commandsAndQueries/CreateTeam"
+	getCityAndAddressByExternalUserIdCommand "emergence/commandsAndQueries/GetCityAndAddressByExternalUserId"
 	"github.com/baranius/godiator"
 	"github.com/izumin5210/grapi/pkg/grapiserver"
 	panicHandler "github.com/kazegusuri/grpc-panic-handler"
 	"github.com/srvc/appctx"
 	"log"
 	os "os"
-	"time"
 )
 
 func run() error {
@@ -33,18 +33,26 @@ func run() error {
 	g := godiator.GetInstance()
 
 	g.Register(
-		&createChatCommands.CreateChatCommand{},
+		&createTeamCommands.CreateTeamCommand{},
 		func() interface{} {
-			return &createChatCommands.CreateChatCommandHandler{
+			return &createTeamCommands.CreateTeamCommandHandler{
 				IRepository: repo,
 			}
 		})
 
-	//register DeleteChatCommand
+	//register CreateIncidentCommandHandler
 	g.Register(
-		&deleteChatCommands.DeleteChatsCommand{},
+		&createIncidentCommands.CreateIncidentCommand{},
 		func() interface{} {
-			return &deleteChatCommands.DeleteChatsCommandHandler{
+			return &createIncidentCommands.CreateIncidentCommandHandler{
+				IRepository: repo,
+			}
+		})
+	//register GetCityAndAddressCommandHandler
+	g.Register(
+		&getCityAndAddressByExternalUserIdCommand.GetCityAndAddressByExternalUserIdCommand{},
+		func() interface{} {
+			return &getCityAndAddressByExternalUserIdCommand.GetCityAndAddressByExternalUserIdCommandHandler{
 				IRepository: repo,
 			}
 		})
@@ -60,22 +68,8 @@ func run() error {
 		grapiserver.WithDefaultLogger(),
 		grapiserver.WithGrpcServerUnaryInterceptors(panicHandler.UnaryPanicHandler),
 		grapiserver.WithServers(
-			server.NewNotyfierServiceServer(repo),
+			server.NewHospitalServiceServer(repo),
 		),
 	)
-
-	//create a background task to send notifications to chats that have exceeded the interval evry minute
-	go func() {
-		for {
-			log.Println("Sending notifications to chats")
-			err := repo.NotifyChats()
-			if err != nil {
-				log.Println(err)
-				return
-			}
-			time.Sleep(time.Minute)
-		}
-	}()
-
 	return s.Serve(ctx)
 }

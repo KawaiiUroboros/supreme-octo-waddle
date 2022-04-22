@@ -10,7 +10,7 @@ import (
 func Compose() error {
 	m, err := migrate.New(
 		"file://db/migrations",
-		"postgres://uhjxadtqnmvedz:827b87d9c520ea5e6c07d04522a1efa923be6740fe2332174bc7511532e52e0a@ec2-63-35-156-160.eu-west-1.compute.amazonaws.com:5432/d5qq14sdoip2f")
+		"postgres://aaxagnxiuvdgfe:0ca29444e6e2a9dd1565bc6384921da5d5f4511587fe4498f9219e4a87ff3400@ec2-176-34-211-0.eu-west-1.compute.amazonaws.com:5432/df6u184vr7eg3s")
 
 	if err != nil {
 		return errors.New("не удалось создать инстанс миграций")

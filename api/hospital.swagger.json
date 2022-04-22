@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "notyfier.proto",
+    "title": "hospital.proto",
     "version": "version not set"
   },
   "consumes": [
@@ -11,14 +11,15 @@
     "application/json"
   ],
   "paths": {
-    "/CreateChats": {
+    "/incidents": {
       "post": {
-        "operationId": "NotyfierService_CreateChats",
+        "summary": "create incident",
+        "operationId": "HospitalService_CreateIncident",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/emergenceCreateChatsResponse"
+              "$ref": "#/definitions/emergenceCreateIncidentResponse"
             }
           },
           "default": {
@@ -34,24 +35,24 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/emergenceCreateChatsRequest"
+              "$ref": "#/definitions/emergenceCreateIncidentRequest"
             }
           }
         ],
         "tags": [
-          "NotyfierService"
+          "HospitalService"
         ]
       }
     },
-    "/DeleteChats": {
+    "/teams": {
       "post": {
-        "summary": "RPC for deleting a chats by external user ids",
-        "operationId": "NotyfierService_DeleteChats",
+        "summary": "create team",
+        "operationId": "HospitalService_CreateTeam",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/emergenceDeleteChatsResponse"
+              "$ref": "#/definitions/emergenceCreateTeamResponse"
             }
           },
           "default": {
@@ -67,24 +68,24 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/emergenceDeleteChatsRequest"
+              "$ref": "#/definitions/emergenceCreateTeamRequest"
             }
           }
         ],
         "tags": [
-          "NotyfierService"
+          "HospitalService"
         ]
       }
     },
-    "/GetNotification/{userid}": {
+    "/users/{external_user_id}/city_and_address": {
       "get": {
-        "summary": "get rpc for getting a chats by user ids",
-        "operationId": "NotyfierService_GetNotification",
+        "summary": "Get city and address by external user id",
+        "operationId": "HospitalService_GetCityAndAddressByExternalUserId",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/emergenceGetNotificationResponse"
+              "$ref": "#/definitions/emergenceGetCityAndAddressByExternalUserIdResponse"
             }
           },
           "default": {
@@ -96,75 +97,84 @@
         },
         "parameters": [
           {
-            "name": "userid",
+            "name": "external_user_id",
             "in": "path",
             "required": true,
             "type": "string"
           }
         ],
         "tags": [
-          "NotyfierService"
+          "HospitalService"
         ]
       }
     }
   },
   "definitions": {
-    "emergenceCreateChatsRequest": {
+    "emergenceCreateIncidentRequest": {
       "type": "object",
       "properties": {
-        "ExternalUserIdToInterval": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "title": "CreateChats"
-    },
-    "emergenceCreateChatsResponse": {
-      "type": "object",
-      "properties": {
-        "ExternalUserIdToChatUrl": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "emergenceDeleteChatsRequest": {
-      "type": "object",
-      "properties": {
-        "user_ids": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "title": "DeleteChatsRequest is a request to delete chats"
-    },
-    "emergenceDeleteChatsResponse": {
-      "type": "object",
-      "properties": {
-        "deleted_chats": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "title": "DeleteChatsResponse is a response to delete chats"
-    },
-    "emergenceGetNotificationResponse": {
-      "type": "object",
-      "properties": {
-        "answer": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "city": {
           "type": "string"
         }
       },
-      "title": "GetNotificationResponse is a response for getting a chats by user ids"
+      "title": "create incident request"
+    },
+    "emergenceCreateIncidentResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "string"
+        }
+      },
+      "title": "create incident response"
+    },
+    "emergenceCreateTeamRequest": {
+      "type": "object",
+      "properties": {
+        "emails": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "city": {
+          "type": "string"
+        }
+      },
+      "title": "create team request"
+    },
+    "emergenceCreateTeamResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "string"
+        }
+      },
+      "title": "create team response"
+    },
+    "emergenceGetCityAndAddressByExternalUserIdResponse": {
+      "type": "object",
+      "properties": {
+        "city": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        }
+      },
+      "title": "get city and address by external user id response"
     },
     "protobufAny": {
       "type": "object",

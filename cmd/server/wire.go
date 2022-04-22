@@ -12,10 +12,10 @@ import (
 // InitializeDependency initialize all structs and interfaces
 func InitializeDependency() (integration.IRepository, error) {
 	wire.Build(
-		clients.NewSlackClient,
+		clients.NewOpsGenieClient,
 		clients.NewPostgresClient,
 		integration.NewRepository,
-		wire.Bind(new(clients.ISlackClient), new(clients.SlackClient)),
+		wire.Bind(new(clients.IOpsGenieClient), new(clients.OpsGenieClient)),
 		wire.Bind(new(clients.IPostgresClient), new(clients.PostgresClient)),
 		wire.Bind(new(integration.IRepository), new(integration.Repository)),
 	)
