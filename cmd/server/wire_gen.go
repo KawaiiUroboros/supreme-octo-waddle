@@ -16,7 +16,7 @@ import (
 // InitializeDependency initialize all structs and interfaces
 func InitializeDependency() (integration.IRepository, error) {
 	postgresClient := clients.NewPostgresClient()
-	slackClient := clients.NewSlackClient()
-	repository := integration.NewRepository(postgresClient, slackClient)
+	opsGenieClient := clients.NewOpsGenieClient()
+	repository := integration.NewRepository(postgresClient, opsGenieClient)
 	return repository, nil
 }
