@@ -155,6 +155,60 @@ func local_request_HospitalService_GetCityAndAddressByExternalUserId_0(ctx conte
 
 }
 
+func request_HospitalService_SetTeamIsBlockedFalse_0(ctx context.Context, marshaler runtime.Marshaler, client HospitalServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SetTeamIsBlockedFalseRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["team_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "team_id")
+	}
+
+	protoReq.TeamId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "team_id", err)
+	}
+
+	msg, err := client.SetTeamIsBlockedFalse(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_HospitalService_SetTeamIsBlockedFalse_0(ctx context.Context, marshaler runtime.Marshaler, server HospitalServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SetTeamIsBlockedFalseRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["team_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "team_id")
+	}
+
+	protoReq.TeamId, err = runtime.String(val)
+
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "team_id", err)
+	}
+
+	msg, err := server.SetTeamIsBlockedFalse(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 // RegisterHospitalServiceHandlerServer registers the http handlers for service HospitalService to "mux".
 // UnaryRPC     :call HospitalServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
@@ -227,6 +281,29 @@ func RegisterHospitalServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 		}
 
 		forward_HospitalService_GetCityAndAddressByExternalUserId_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("PUT", pattern_HospitalService_SetTeamIsBlockedFalse_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_HospitalService_SetTeamIsBlockedFalse_0(rctx, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_HospitalService_SetTeamIsBlockedFalse_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -331,6 +408,26 @@ func RegisterHospitalServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 
 	})
 
+	mux.Handle("PUT", pattern_HospitalService_SetTeamIsBlockedFalse_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_HospitalService_SetTeamIsBlockedFalse_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_HospitalService_SetTeamIsBlockedFalse_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	return nil
 }
 
@@ -340,6 +437,8 @@ var (
 	pattern_HospitalService_CreateIncident_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"incidents"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_HospitalService_GetCityAndAddressByExternalUserId_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"users", "external_user_id", "city_and_address"}, "", runtime.AssumeColonVerbOpt(true)))
+
+	pattern_HospitalService_SetTeamIsBlockedFalse_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1, 2, 2}, []string{"teams", "team_id", "is_blocked"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
@@ -348,4 +447,6 @@ var (
 	forward_HospitalService_CreateIncident_0 = runtime.ForwardResponseMessage
 
 	forward_HospitalService_GetCityAndAddressByExternalUserId_0 = runtime.ForwardResponseMessage
+
+	forward_HospitalService_SetTeamIsBlockedFalse_0 = runtime.ForwardResponseMessage
 )

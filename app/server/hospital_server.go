@@ -35,6 +35,20 @@ type hospitalServiceServerImpl struct {
 	repo     integration.IRepository
 }
 
+func (s *hospitalServiceServerImpl) SetTeamIsBlockedFalse(ctx context.Context, request *api_pb.SetTeamIsBlockedFalseRequest) (*api_pb.SetTeamIsBlockedFalseResponse, error) {
+	team := models.Team{
+		Id: request.TeamId,
+	}
+	err := s.repo.SetTeamIsBlockedFalse(team.Id)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+	return &api_pb.SetTeamIsBlockedFalseResponse{
+		Success: true,
+		Error:   "",
+	}, nil
+}
+
 func (s *hospitalServiceServerImpl) GetCityAndAddressByExternalUserId(ctx context.Context, request *api_pb.GetCityAndAddressByExternalUserIdRequest) (*api_pb.GetCityAndAddressByExternalUserIdResponse, error) {
 	//create command and send it to mediator
 	command := getCityAndAddressByExternalUserIdCommand.GetCityAndAddressByExternalUserIdCommand{

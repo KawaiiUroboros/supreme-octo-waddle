@@ -77,6 +77,37 @@
         ]
       }
     },
+    "/teams/{team_id}/is_blocked": {
+      "put": {
+        "summary": "Set team is_blocked false",
+        "operationId": "HospitalService_SetTeamIsBlockedFalse",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/emergenceSetTeamIsBlockedFalseResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "team_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "HospitalService"
+        ]
+      }
+    },
     "/users/{external_user_id}/city_and_address": {
       "get": {
         "summary": "Get city and address by external user id",
@@ -175,6 +206,18 @@
         }
       },
       "title": "get city and address by external user id response"
+    },
+    "emergenceSetTeamIsBlockedFalseResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "string"
+        }
+      },
+      "title": "set team is_blocked false response"
     },
     "protobufAny": {
       "type": "object",

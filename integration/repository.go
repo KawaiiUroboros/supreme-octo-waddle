@@ -10,6 +10,7 @@ type IRepository interface {
 	CreateTeam(emails []string, city string) (teamId string, error error)
 	CreateIncident(incident *models.Incident) (error error)
 	GetCityAndAddressByExternalUserId(externalUserId string) (city string, address string, err error)
+	SetTeamIsBlockedFalse(teamId string) (error error)
 }
 
 // Repository implementation of the IRepository interface for the database and OpsGenie
@@ -55,4 +56,9 @@ func (r *Repository) CreateIncident(incident *models.Incident) error {
 //GetCityAndAddressByExternalUserId gets the city and address by external user id from the database
 func (r *Repository) GetCityAndAddressByExternalUserId(externalUserId string) (city string, address string, err error) {
 	return r.db.GetCityAndAddressByExternalUserId(externalUserId)
+}
+
+//SetTeamIsBlockedFalse sets the team is blocked to false in the database
+func (r *Repository) SetTeamIsBlockedFalse(teamId string) error {
+	return r.db.SetTeamIsBlockedFalse(teamId)
 }

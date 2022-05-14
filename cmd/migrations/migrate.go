@@ -18,7 +18,7 @@ func Compose() error {
 
 	version, _, _ := m.Version()
 
-	if version != 1 {
+	if version != 2 {
 		if err := m.Up(); err != nil {
 			return err
 		}

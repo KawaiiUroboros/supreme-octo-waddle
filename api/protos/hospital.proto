@@ -28,6 +28,12 @@ service HospitalService {
       get: "/users/{external_user_id}/city_and_address"
     };
   }
+  //Set team is_blocked false
+  rpc SetTeamIsBlockedFalse (SetTeamIsBlockedFalseRequest) returns (SetTeamIsBlockedFalseResponse) {
+    option (google.api.http) = {
+      put: "/teams/{team_id}/is_blocked"
+    };
+  }
 }
 //create team request
 message CreateTeamRequest {
@@ -58,5 +64,14 @@ message GetCityAndAddressByExternalUserIdRequest {
 message GetCityAndAddressByExternalUserIdResponse {
   string city = 1;
   string address = 2;
+}
+//set team is_blocked false request
+message SetTeamIsBlockedFalseRequest {
+  string team_id = 1;
+}
+//set team is_blocked false response
+message SetTeamIsBlockedFalseResponse {
+  bool success = 1;
+  string error = 2;
 }
 

@@ -15,6 +15,7 @@ type IPostgresClient interface {
 	AddTeam(id string, city string) error
 	GetTeamByCity(city string) (team *models.Team, err error)
 	GetCityAndAddressByExternalUserId(externalUserId string) (address string, city string, err error)
+	SetTeamIsBlockedFalse(teamId string) error
 }
 
 //PostgresClient is a client for Postgres implementation of IPostgresClient
@@ -43,7 +44,7 @@ func (p *PostgresClient) CloseConnection() error {
 
 // AddTeam adds a team to the database and city to the database
 func (p *PostgresClient) AddTeam(id string, city string) error {
-	_, err := p.db.Exec("INSERT INTO teams (id, city) VALUES ($1, $2)", id, city)
+	_, err := p.db.Exec("INSERT INTO teams (id, city, false) VALUES ($1, $2)", id, city)
 	if err != nil {
 		return err
 	}
@@ -54,7 +55,13 @@ func (p *PostgresClient) AddTeam(id string, city string) error {
 func (p *PostgresClient) GetTeamByCity(city string) (team *models.Team, err error) {
 	var id string
 	var teamCity string
-	err = p.db.QueryRow("SELECT id, city FROM teams WHERE city = $1", city).Scan(&id, &teamCity)
+	err = p.db.QueryRow("SELECT id, city, is_blocked FROM teams WHERE city = $1 AND is_blocked = false", city).Scan(&id, &teamCity)
+	//if id is empty, then take the first team from the database
+	if id == "" {
+		err = p.db.QueryRow("SELECT id, city, is_blocked FROM teams WHERE city = $1", city).Scan(&id, &teamCity)
+	}
+	// set selected team is_blocked true
+	_, err = p.db.Exec("UPDATE teams SET is_blocked = true WHERE id = $1", id)
 	if err != nil {
 		return nil, err
 	}
@@ -68,4 +75,13 @@ func (p *PostgresClient) GetCityAndAddressByExternalUserId(externalUserId string
 		return "", "", err
 	}
 	return address, city, nil
+}
+
+// SetTeamIsBlockedFalse sets the team is_blocked to false
+func (p *PostgresClient) SetTeamIsBlockedFalse(teamId string) error {
+	_, err := p.db.Exec("UPDATE teams SET is_blocked = false WHERE id = $1", teamId)
+	if err != nil {
+		return err
+	}
+	return nil
 }
